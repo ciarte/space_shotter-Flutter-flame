@@ -18,9 +18,9 @@ class SpaceShooterGame extends FlameGame
       // ParallaxImageData('stars.png'),
       // ParallaxImageData('stars.png')
     ],
-        baseVelocity: Vector2(0, -5),
+        baseVelocity: Vector2(0, -8),
         repeat: ImageRepeat.repeat,
-        velocityMultiplierDelta: Vector2(0, 5));
+        velocityMultiplierDelta: Vector2(0, 8));
     add(parallax);
 
     player = Player();

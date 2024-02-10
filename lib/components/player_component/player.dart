@@ -1,12 +1,17 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:space_shutter/components/bullets/bullet.dart';
+import 'package:space_shutter/components/enemy/enemy.dart';
+import 'package:space_shutter/components/explosion/explosion.dart';
 import 'package:space_shutter/space_shooter_game.dart';
 
 class Player extends SpriteAnimationComponent
-    with HasGameRef<SpaceShooterGame> {
+    with HasGameRef<SpaceShooterGame>, CollisionCallbacks {
   late final SpawnComponent _bulletSpawner;
-
-  Player() : super(size: Vector2(80, 120), anchor: Anchor.center);
+  late int _life;
+  Player() : super(size: Vector2(80, 120), anchor: Anchor.center) {
+    _life = 3;
+  }
 
   @override
   Future<void> onLoad() async {
@@ -27,6 +32,7 @@ class Player extends SpriteAnimationComponent
             amount: 4, stepTime: 0.2, textureSize: Vector2(32, 48)));
 
     position = gameRef.size / 2;
+    add(RectangleHitbox());
   }
 
   // @override
@@ -47,5 +53,23 @@ class Player extends SpriteAnimationComponent
 
   void stopShooting() {
     _bulletSpawner.timer.stop();
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (_life < 0) {
+      removeFromParent();
+      print("GAME OVER");
+    }
+
+    if (other is Enemy) {
+      _life -= 1;
+      other.removeFromParent();
+      game.add(Explosion(position: position));
+    }
   }
 }

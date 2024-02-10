@@ -4,9 +4,10 @@ import 'package:space_shutter/space_shooter_game.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Scaffold(
       appBar: AppBar(
-        title: Text('Container with Game'),
+        title: Text('Shooter Space Game'),
       ),
       body: SizedBox(
         // width: 300, // Define el ancho deseado del juego
