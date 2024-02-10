@@ -14,9 +14,9 @@ class SpaceShooterGame extends FlameGame
   @override
   Future<void> onLoad() async {
     final parallax = await loadParallaxComponent([
-      ParallaxImageData('stars.png'),
-      ParallaxImageData('stars.png'),
-      ParallaxImageData('stars.png')
+      ParallaxImageData('fondo1.jpg'),
+      // ParallaxImageData('stars.png'),
+      // ParallaxImageData('stars.png')
     ],
         baseVelocity: Vector2(0, -5),
         repeat: ImageRepeat.repeat,
