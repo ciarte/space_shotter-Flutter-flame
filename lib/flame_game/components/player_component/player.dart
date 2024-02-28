@@ -81,7 +81,7 @@ class Player extends SpriteAnimationComponent
 
       gameRef.playerLifeNotifier.value = life;
       // print(life);
-      // other.removeFromParent();
+      other.removeFromParent();
       game.add(Explosion(position: position));
     }
   }

@@ -76,7 +76,7 @@ class SpaceShooterGame extends FlameGame
     camera.viewport.add(lifeComponent);
     add(SpawnComponent(
         factory: (index) {
-          return Enemy();
+          return Enemy.hard();
         },
         period: 1,
         area: Rectangle.fromLTWH(20, 0, size.x - 40, -Enemy.enemySize)));
@@ -84,7 +84,7 @@ class SpaceShooterGame extends FlameGame
     final scoreComponent = TextComponent(
         text: scoreText, position: Vector2.all(30), textRenderer: textRenderer);
 
-    scoreNotifier = ValueNotifier<int>(Enemy().count);
+    scoreNotifier = ValueNotifier<int>(Enemy.hard().count);
 
     scoreNotifier.addListener(() {
       scoreComponent.text =

@@ -33,22 +33,16 @@ class MyGame extends StatelessWidget {
 
               return MaterialApp.router(
                 theme: flutterNesTheme().copyWith(
-                  // colorScheme: ColorScheme.fromSeed(
-                  //   seedColor: palette.seed.color,
-                  //   background: palette.backgroundMain.color,
-                  // ),
                   textTheme: GoogleFonts.pressStart2pTextTheme().apply(
                     bodyColor: palette.text.color,
                     displayColor: palette.text.color,
                   ),
                 ),
                 debugShowCheckedModeBanner: false,
-                routerConfig: goRouter,
-                // home: const Scaffold(body: Screen()
-                // LevelSelectionScreen()
-                // MainMenuScreen(),
-                // GameScreen(),
-                // ),
+                // routerConfig: goRouter,
+                routeInformationProvider: goRouter.routeInformationProvider,
+                routeInformationParser: goRouter.routeInformationParser,
+                routerDelegate: goRouter.routerDelegate,
               );
             })));
   }
