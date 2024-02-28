@@ -66,11 +66,11 @@ class SpaceShooterGame extends FlameGame
     playerLifeNotifier.addListener(() {
       // print('${playerLifeNotifier.value}');
       lifeComponent.text = 'Life: ${playerLifeNotifier.value}';
-      // if (playerLifeNotifier.value < 0) {
-      //   pauseEngine();
+      if (playerLifeNotifier.value < 0) {
+        pauseEngine();
 
-      //   overlays.add(GameScreen.looseDialogKey);
-      // }
+        overlays.add(GameScreen.looseDialogKey);
+      }
     });
 
     camera.viewport.add(lifeComponent);

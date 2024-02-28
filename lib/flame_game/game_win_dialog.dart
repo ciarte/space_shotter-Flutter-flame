@@ -26,7 +26,7 @@ class GameWinDialog extends StatelessWidget {
     return Center(
       child: NesContainer(
         width: 420,
-        height: 300,
+        height: 400,
         backgroundColor: palette.backgroundPlaySession.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -37,8 +37,9 @@ class GameWinDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'You completed level',
+              style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -48,7 +49,9 @@ class GameWinDialog extends StatelessWidget {
                   context.go('/level/${level.number + 1}');
                 },
                 type: NesButtonType.primary,
-                child: const Text('Next level'),
+                child: Text(
+                  'Next level',
+                ),
               ),
               const SizedBox(height: 16),
             ],
