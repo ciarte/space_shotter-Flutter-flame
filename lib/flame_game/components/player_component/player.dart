@@ -9,17 +9,23 @@ import 'package:space_shutter/flame_game/space_shooter_game.dart';
 class Player extends SpriteAnimationComponent
     with HasGameRef<SpaceShooterGame>, CollisionCallbacks {
   Vector2 _moveDirection = Vector2.zero();
-  final double _speed = 250;
+  final double _speed = 280;
   late final SpawnComponent _bulletSpawner;
   late int life;
 
-  Player() : super(size: Vector2(80, 120), anchor: Anchor.center) {
+  final JoystickComponent joystick;
+  Player(this.joystick) : super(size: Vector2(80, 120), anchor: Anchor.center) {
     life = 3;
   }
   @override
   void update(double dt) {
     super.update(dt);
-    position += _moveDirection.normalized() * _speed * dt;
+    // position += _moveDirection.normalized() * _speed * dt;
+    if (joystick.direction != JoystickDirection.idle) {
+      position.add(joystick.relativeDelta * _speed * dt);
+      //si se mueve en todas direcciones
+      // angle = joystick.delta.screenAngle();
+    }
 
     //player no sale de la pantalla y tiene limite
     var clampedY =
@@ -62,6 +68,7 @@ class Player extends SpriteAnimationComponent
   }
 
   void stopShooting() {
+    // _bulletSpawner.timer.stop();
     _bulletSpawner.timer.stop();
   }
 
