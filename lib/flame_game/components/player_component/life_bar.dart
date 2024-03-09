@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:space_shutter/flame_game/components/player_component/player.dart';
 
 Color selectBarColor(double currentWidth, double maxWidth) {
-  if (currentWidth <= maxWidth / 2.5) {
-    return Colors.redAccent;
+  if (currentWidth <= maxWidth / 3) {
+    return const Color(0xFFEA0101);
+  } else if (currentWidth <= maxWidth / 2.5) {
+    return Colors.red.shade800;
   } else if (currentWidth <= maxWidth / 1.5) {
     return Colors.orange.shade800;
   } else {
