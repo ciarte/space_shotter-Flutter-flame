@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:space_shutter/flame_game/components/bullets/bullet.dart';
 import 'package:space_shutter/flame_game/components/explosion/explosion.dart';
+import 'package:space_shutter/flame_game/components/player_component/player.dart';
 import 'package:space_shutter/flame_game/space_shooter_game.dart';
 
 class Enemy extends SpriteComponent

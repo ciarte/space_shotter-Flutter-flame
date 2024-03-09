@@ -5,7 +5,7 @@ class Explosion extends SpriteAnimationComponent
     with HasGameRef<SpaceShooterGame> {
   Explosion({super.position})
       : super(
-            anchor: Anchor.center, size: Vector2.all(75), removeOnFinish: true);
+            anchor: Anchor.center, size: Vector2.all(95), removeOnFinish: true);
 
   @override
   Future<void> onLoad() async {

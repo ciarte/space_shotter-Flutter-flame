@@ -15,19 +15,22 @@ class GameWinDialog extends StatelessWidget {
   const GameWinDialog({
     super.key,
     required this.level,
+    required this.world,
   });
 
   /// The properties of the level that was just finished.
-  final GameLevel level;
+  final GameLevels level;
+  final GameWorld world;
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final palette = context.read<Palette>();
     return Center(
       child: NesContainer(
-        width: 420,
-        height: 400,
-        backgroundColor: palette.backgroundPlaySession.color,
+        width: size.width - 80,
+        height: size.height / 2,
+        backgroundColor: palette.backgroundDialog.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -38,18 +41,18 @@ class GameWinDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'You completed level',
+              'You completed level ${level.number}',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            if (level.number < gameLevels.length) ...[
+            if (level.number < world.levels.length) ...[
               NesButton(
                 onPressed: () {
-                  context.go('/level/${level.number + 1}');
+                  context.go('/levels/${world.number}/${level.number + 1}');
                 },
                 type: NesButtonType.primary,
-                child: Text(
+                child: const Text(
                   'Next level',
                 ),
               ),

@@ -17,7 +17,7 @@ class WobblyButton extends StatefulWidget {
 class _WobblyButtonState extends State<WobblyButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 300),
+    duration: const Duration(milliseconds: 800),
     vsync: this,
   );
 
@@ -37,7 +37,7 @@ class _WobblyButtonState extends State<WobblyButton>
         _controller.stop(canceled: false);
       },
       child: RotationTransition(
-        turns: _controller.drive(const _MySineTween(0.005)),
+        turns: _controller.drive(const _MySineTween(0.01)),
         child: NesButton(
           type: NesButtonType.primary,
           onPressed: widget.onPressed,

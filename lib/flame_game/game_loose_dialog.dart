@@ -1,5 +1,5 @@
-import 'package:flame/components.dart';
-import 'package:flame/game.dart';
+// import 'package:flame/components.dart';
+// import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +16,7 @@ class GameLooseDialog extends StatelessWidget {
   });
 
   /// The properties of the level
-  final GameLevel level;
+  final GameLevels level;
 
   @override
   Widget build(BuildContext context) {
