@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/input.dart';
 import 'package:space_shutter/audio/flame_audio.dart';
@@ -71,7 +72,9 @@ class SpaceShooterGame extends FlameGame
       addScore: addScore,
       resetScore: resetScore,
     );
+
     add(player);
+
     final hudButton = HudButtonComponent(
       margin: const EdgeInsets.only(right: 40, bottom: 80),
       button: CircleComponent(
@@ -98,7 +101,7 @@ class SpaceShooterGame extends FlameGame
 
     playerLifeNotifier = ValueNotifier<int>(player.life);
     scoreNotifier = ValueNotifier(0);
-    final scoreText = 'Enemies: ${scoreNotifier.value} / ${level.winScore}';
+    final scoreText = 'Score: ${scoreNotifier.value}';
 
     final textRenderer = TextPaint(
       style: const TextStyle(
@@ -111,36 +114,45 @@ class SpaceShooterGame extends FlameGame
     final scoreComponent = TextComponent(
         text: scoreText, position: Vector2.all(30), textRenderer: textRenderer);
 
-    scoreNotifier = ValueNotifier<int>(Enemy.hard().count);
+    scoreNotifier = ValueNotifier<int>(Enemy.hard().point);
 
     scoreNotifier.addListener(() {
       scoreComponent.text =
           scoreText.replaceFirst('0', '${scoreNotifier.value} ');
 
-      if (scoreNotifier.value >= level.winScore) {
-        pauseEngine();
-
-        overlays.add(GameScreen.winDialogKey);
-      }
-    });
-
-    overlays.addAll([GameScreen.backButtonKey]);
-    final lifeComponent = TextComponent(
-        text: 'Life: ${player.life}',
-        position: Vector2(30, size.y - 30),
-        textRenderer: textRenderer);
-
-    playerLifeNotifier.addListener(() {
-      lifeComponent.text = 'Life: ${playerLifeNotifier.value}';
-
-      // if (playerLifeNotifier.value < 0) {
+      // if (scoreNotifier.value >= level.winScore) {
       //   pauseEngine();
 
-      //   overlays.add(GameScreen.looseDialogKey);
+      //   overlays.add(GameScreen.winDialogKey);
       // }
     });
 
-    camera.viewport.add(lifeComponent);
+    overlays.addAll([GameScreen.backButtonKey]);
+    // final lifeComponent = TextComponent(
+    //     text: 'Life: ${player.life}',
+    //     position: Vector2(30, size.y - 30),
+    //     textRenderer: textRenderer);
+
+    // playerLifeNotifier.addListener(() {
+    //   lifeComponent.text = 'Life: ${playerLifeNotifier.value}';
+
+    //   // if (playerLifeNotifier.value < 0) {
+    //   //   pauseEngine();
+
+    //   //   overlays.add(GameScreen.looseDialogKey);
+    //   // }
+    // });
+
+    // camera.viewport.add(lifeComponent);
+
+    // final sprite1 = await Sprite.load('heart.png');
+    // final lifeComponent1 = SpriteComponent(
+    //   sprite: sprite1,
+    //   size: Vector2.all(28),
+    //   position: Vector2(size.x - 34, size.y - 260),
+    // );
+
+    // camera.viewport.add(lifeComponent1);
 
     camera.viewport.add(scoreComponent);
     // print(playerNotifier.single!.life);

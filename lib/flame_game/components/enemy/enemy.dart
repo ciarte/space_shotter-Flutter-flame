@@ -5,7 +5,6 @@ import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:space_shutter/flame_game/components/bullets/bullet.dart';
 import 'package:space_shutter/flame_game/components/explosion/explosion.dart';
-import 'package:space_shutter/flame_game/components/player_component/player.dart';
 import 'package:space_shutter/flame_game/space_shooter_game.dart';
 
 class Enemy extends SpriteComponent
@@ -13,7 +12,7 @@ class Enemy extends SpriteComponent
   final Vector2 _srcSize;
   final Vector2 _srcPosition;
   static const enemySize = 55.0;
-  late int count;
+  late int point;
 
   final int speed;
 
@@ -24,21 +23,21 @@ class Enemy extends SpriteComponent
         _srcPosition = Vector2.zero(),
         speed = 0,
         super(size: Vector2.all(enemySize), anchor: Anchor.center, angle: pi) {
-    count = 0;
+    point = 10;
   }
   Enemy.medium({super.position})
       : _srcSize = Vector2(94, 72),
         _srcPosition = Vector2(92, 0),
         speed = 2,
         super(size: Vector2.all(enemySize), anchor: Anchor.center, angle: pi) {
-    count = 0;
+    point = 20;
   }
   Enemy.hard({super.position})
       : _srcSize = Vector2(84, 72),
         _srcPosition = Vector2(204, 0),
         speed = 3,
         super(size: Vector2.all(enemySize), anchor: Anchor.center, angle: pi) {
-    count = 0;
+    point = 30;
   }
   Enemy.legend({
     super.position,
@@ -46,7 +45,7 @@ class Enemy extends SpriteComponent
         _srcPosition = Vector2(306, 0),
         speed = 5,
         super(size: Vector2.all(enemySize), anchor: Anchor.center, angle: pi) {
-    count = 0;
+    point = 40;
   }
 
   /// Generates a random obstacle of type [ObstacleType].
@@ -112,8 +111,9 @@ class Enemy extends SpriteComponent
 
     if (other is Bullet) {
       // count += 1;
-      gameRef.scoreNotifier.value += count + 1;
-
+      gameRef.scoreNotifier.value += point;
+      print(gameRef.scoreNotifier.value);
+      print(point);
       other.removeFromParent();
       removeFromParent();
       game.add(Explosion(position: position));

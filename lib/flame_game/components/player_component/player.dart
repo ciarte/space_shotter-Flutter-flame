@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:space_shutter/audio/flame_audio.dart';
 
 import 'package:space_shutter/flame_game/components/bullets/bullet.dart';
@@ -58,10 +59,10 @@ class Player extends SpriteAnimationComponent
     add(RectangleHitbox());
   }
 
-  void move(Vector2 delta) {
-    // _moveDirection = delta;
-    // position.add(delta);
-  }
+  // void move(Vector2 delta) {
+  //   // _moveDirection = delta;
+  //   // position.add(delta);
+  // }
 
   void startShooting() {
     Bullet bullet = Bullet(position: position + Vector2(0, -height / 2));
@@ -92,6 +93,13 @@ class Player extends SpriteAnimationComponent
       gameRef.scoreNotifier.value += 1;
       gameRef.playerLifeNotifier.value = life;
       // print(life);
+      gameRef.camera.viewfinder.add(
+        MoveByEffect(
+          Vector2.all(10),
+          EffectController(duration: 2),
+        ),
+      );
+      // Aplicar efecto de color a toda la pantalla
 
       game.add(Explosion(position: position));
       other.removeFromParent();
