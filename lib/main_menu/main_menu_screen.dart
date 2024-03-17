@@ -29,7 +29,9 @@ class MainMenuScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // FlameAudio.bgm.play('theme_song.mp3', volume: 0.2);
 
-      settingsController.audioOn.value ? audioGame.musicTheme() : null;
+      settingsController.audioOn.value
+          ? FlameAudio.bgm.play('theme_song.mp3', volume: 0.2)
+          : FlameAudio.bgm.stop();
     });
 
     return Scaffold(
@@ -47,10 +49,13 @@ class MainMenuScreen extends StatelessWidget {
               'Galaxy Defender',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Press Start 2P',
-                fontSize: 36,
-                color: palette.text2.color,
-              ),
+                  fontFamily: 'Press Start 2P',
+                  fontSize: 36,
+                  color: palette.text2.color,
+                  shadows: const [
+                    Shadow(
+                        blurRadius: 20, color: Colors.red, offset: Offset(0, 0))
+                  ]),
             ),
           ),
           _gap,

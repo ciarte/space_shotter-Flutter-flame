@@ -44,7 +44,7 @@ class LifeBarComponent extends PositionComponent {
     // final Rect life = Rect.fromLTWH(0, maxWidth - currentWidth, 28, 150);
 
     final RRect life =
-        RRect.fromLTRBXY(0, 10 + maxWidth - currentWidth, 28, maxWidth, 10, 10);
+        RRect.fromLTRBXY(0, maxWidth - currentWidth, 28, maxWidth, 10, 10);
 
     canvas.drawRRect(
         rect,

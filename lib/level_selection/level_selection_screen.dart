@@ -17,7 +17,7 @@ class LevelSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final levels = worlds.levels;
-    final playerProgress = context.watch<PlayerProgress>();
+    // final playerProgress = context.watch<PlayerProgress>();
 
     return Scaffold(
       body: Center(
@@ -49,7 +49,8 @@ class LevelSelectionScreen extends StatelessWidget {
                     color: Colors.white12,
                     child: Center(
                         child: Stack(children: [
-                      playerProgress.levels.length >= levels[index].number - 1
+                      // playerProgress.levels.length >= levels[index].number - 1
+                      levels.length > 1
                           ? WobblyButton(
                               onPressed: () {
                                 context.go(

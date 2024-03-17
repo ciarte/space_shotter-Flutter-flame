@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:go_router/go_router.dart';
-import 'package:logging/logging.dart';
+
 import 'package:provider/provider.dart';
 import 'package:space_shutter/level_selection/levels.dart';
 import 'package:space_shutter/player_progress/player_progress.dart';
@@ -20,8 +18,9 @@ class WorldSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
-    final playerProgress = context.watch<PlayerProgress>();
-    final blocked = playerProgress.worlds.length >= world.number - 1;
+    // final playerProgress = context.watch<PlayerProgress>();
+    // final blocked = playerProgress.worlds.length >= world.number - 1;
+    final blocked = world.number > 1;
     return Column(
       children: [
         IconButton(
@@ -51,12 +50,12 @@ class WorldSelectionScreen extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            if (playerProgress.worlds.length >= world.number - 1) {
-              context.go('/worlds/${world.number}');
-            } else {
-              // Manejar el caso en el que el mundo no está desbloqueado
-              return;
-            }
+            // if (playerProgress.worlds.length >= world.number - 1) {
+            context.go('/worlds/${world.number}');
+            // } else {
+            //   // Manejar el caso en el que el mundo no está desbloqueado
+            //   return;
+            // }
           },
         ),
         _gap,

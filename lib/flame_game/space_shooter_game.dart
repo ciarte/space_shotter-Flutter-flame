@@ -1,9 +1,10 @@
 import 'dart:math';
-import 'dart:ui';
+
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
+
 import 'package:flame/experimental.dart';
 import 'package:flame/input.dart';
+import 'package:provider/provider.dart';
 import 'package:space_shutter/audio/flame_audio.dart';
 
 import 'package:space_shutter/flame_game/components/bacground/background.dart';
@@ -15,13 +16,14 @@ import 'package:flame/game.dart';
 import 'package:space_shutter/flame_game/game_screen.dart';
 
 import 'package:space_shutter/level_selection/levels.dart';
-import 'package:space_shutter/player_progress/player_progress.dart';
+import 'package:space_shutter/models/player_ships_model.dart';
+import 'package:space_shutter/player_progress/player_data.dart';
 
 class SpaceShooterGame extends FlameGame
     with PanDetector, HasCollisionDetection, TapDetector {
   SpaceShooterGame({
     required this.level,
-    required PlayerProgress playerProgress,
+    // required PlayerProgress playerProgress,
     required this.audioController,
     Random? random,
   }) : _random = random ?? Random();
@@ -35,6 +37,15 @@ class SpaceShooterGame extends FlameGame
 
   /// A helper for playing sound effects and background audio.
   final AudioGame audioController;
+
+  // @override
+  // void onAttach() {
+  //   if (buildContext != null) {
+  //     final playerData = Provider.of<PlayerData>(buildContext!, listen: false);
+  //     player.setPlayerShip(playerData.spaceShipType);
+  //   }
+  //   super.onAttach();
+  // }
 
   @override
   Future<void> onLoad() async {
@@ -67,10 +78,15 @@ class SpaceShooterGame extends FlameGame
     add(joystick);
 
     //player
+
+    const spaceShipType = SpaceShipsTypes.primary;
+    // final spaceShip = SpaceShips.getSpaceShipspByType(spaceShipType);
+
     player = Player(
       joystick,
       addScore: addScore,
       resetScore: resetScore,
+      spaceShipsType: spaceShipType,
     );
 
     add(player);
@@ -79,25 +95,26 @@ class SpaceShooterGame extends FlameGame
       margin: const EdgeInsets.only(right: 40, bottom: 80),
       button: CircleComponent(
         paint: Paint()..color = Colors.red.withOpacity(0.4),
-        // children: [SpriteComponent(sprite: sp, size: Vector2(120, 120))],
+
         // Tamaño del botón
         radius: 40,
         // size: Vector2(120, 120),
       ),
       anchor: Anchor.bottomRight,
       onPressed: player.startShooting,
-      // onCancelled: player.stopShooting
     );
     add(hudButton);
 
     //mejorar logica enemigos por nivel
-    add(SpawnComponent(
+    final spawnEnemy = SpawnComponent(
         factory: (index) => Enemy.random(
             speed: level.number,
             random: _random,
             canSpawnTall: level.canSpawnTall),
         period: 1,
-        area: Rectangle.fromLTWH(20, 0, size.x - 40, -Enemy.enemySize)));
+        area: Rectangle.fromLTWH(20, 0, size.x - 40, -Enemy.enemySize));
+
+    add(spawnEnemy);
 
     playerLifeNotifier = ValueNotifier<int>(player.life);
     scoreNotifier = ValueNotifier(0);
@@ -155,7 +172,6 @@ class SpaceShooterGame extends FlameGame
     // camera.viewport.add(lifeComponent1);
 
     camera.viewport.add(scoreComponent);
-    // print(playerNotifier.single!.life);
     final lifeBar = LifeBarComponent(player, size);
     add(lifeBar);
   }

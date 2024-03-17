@@ -7,11 +7,9 @@ class AudioGame {
 
   void onButtonPress() {
     FlameAudio.play('click4.mp3');
-    print('boton click');
   }
 
   void onFire() {
     FlameAudio.play('Fire4.mp3');
-    print('fire');
   }
 }

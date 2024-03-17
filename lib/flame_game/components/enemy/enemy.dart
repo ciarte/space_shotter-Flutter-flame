@@ -1,8 +1,11 @@
 import 'dart:math';
 
+import 'dart:async';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+
 import 'package:space_shutter/flame_game/components/bullets/bullet.dart';
 import 'package:space_shutter/flame_game/components/explosion/explosion.dart';
 import 'package:space_shutter/flame_game/space_shooter_game.dart';
@@ -112,8 +115,7 @@ class Enemy extends SpriteComponent
     if (other is Bullet) {
       // count += 1;
       gameRef.scoreNotifier.value += point;
-      print(gameRef.scoreNotifier.value);
-      print(point);
+
       other.removeFromParent();
       removeFromParent();
       game.add(Explosion(position: position));

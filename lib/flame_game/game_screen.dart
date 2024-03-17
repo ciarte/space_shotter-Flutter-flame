@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:space_shutter/audio/audio_controller.dart';
+
 import 'package:space_shutter/audio/flame_audio.dart';
-import 'package:space_shutter/flame_game/game_loose_dialog.dart';
-import 'package:space_shutter/flame_game/game_win_dialog.dart';
+import 'package:space_shutter/flame_game/overlays/game_loose_dialog.dart';
+import 'package:space_shutter/flame_game/overlays/game_pause_dialog.dart';
+import 'package:space_shutter/flame_game/overlays/game_win_dialog.dart';
+import 'package:space_shutter/flame_game/overlays/pause_button.dart';
 
 import 'package:space_shutter/level_selection/levels.dart';
 import 'package:space_shutter/flame_game/space_shooter_game.dart';
@@ -23,6 +25,7 @@ class GameScreen extends StatelessWidget {
   static const String winDialogKey = 'win_dialog';
   static const String looseDialogKey = 'loose_dialog';
   static const String backButtonKey = 'back_button';
+  static const String pauseMenu = 'pause_menu';
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +34,22 @@ class GameScreen extends StatelessWidget {
     return GameWidget(
       game: SpaceShooterGame(
         level: level,
-        playerProgress: context.read<PlayerProgress>(),
+        // playerProgress: context.read<PlayerProgress>(),
         audioController: audioGame,
       ),
       overlayBuilderMap: {
-        backButtonKey: (context, game) {
+        backButtonKey: (context, SpaceShooterGame game) {
           return Positioned(
-            top: 20,
-            right: 10,
-            child: Container(
-              color: Colors.red,
-              height: 20,
-              width: 20,
-            ),
-          );
+              top: 15,
+              right: 10,
+              child: PauseButton(
+                gameRef: game,
+              ));
         },
-        winDialogKey: (context, game) {
+        pauseMenu: (context, SpaceShooterGame game) {
+          return GamePauseDialog(game: game);
+        },
+        winDialogKey: (context, SpaceShooterGame game) {
           return GameWinDialog(level: level, world: world);
         },
         looseDialogKey: (context, game) {

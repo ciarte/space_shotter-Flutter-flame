@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/collisions.dart';
@@ -10,12 +11,12 @@ import 'package:space_shutter/flame_game/components/enemy/enemy.dart';
 import 'package:space_shutter/flame_game/components/explosion/explosion.dart';
 
 import 'package:space_shutter/flame_game/space_shooter_game.dart';
+import 'package:space_shutter/models/player_ships_model.dart';
 
 class Player extends SpriteAnimationComponent
     with HasGameRef<SpaceShooterGame>, CollisionCallbacks {
-  // Vector2 _moveDirection = Vector2.zero();
-  final double _speed = 280;
-  // late final SpawnComponent _bulletSpawner;
+  SpaceShipsTypes spaceShipsType;
+  SpaceShips _spaceShips;
   late int life;
 
   final JoystickComponent joystick;
@@ -23,9 +24,13 @@ class Player extends SpriteAnimationComponent
   final VoidCallback resetScore;
   AudioGame audioGame = AudioGame();
 
-  Player(this.joystick, {required this.addScore, required this.resetScore})
-      : super(size: Vector2(80, 120), anchor: Anchor.center) {
-    life = 10;
+  Player(this.joystick,
+      {required this.spaceShipsType,
+      required this.addScore,
+      required this.resetScore})
+      : _spaceShips = SpaceShips.getSpaceShipspByType(spaceShipsType),
+        super(size: Vector2(80, 120), anchor: Anchor.center, angle: -pi / 2) {
+    life = _spaceShips.life;
   }
 
   @override
@@ -33,14 +38,13 @@ class Player extends SpriteAnimationComponent
     super.update(dt);
     // position += _moveDirection.normalized() * _speed * dt;
     if (joystick.direction != JoystickDirection.idle) {
-      position.add(joystick.relativeDelta * _speed * dt);
+      position.add(joystick.relativeDelta * _spaceShips.speed * dt);
       //si se mueve en todas direcciones
       // angle = joystick.delta.screenAngle();
     }
 
     //player no sale de la pantalla y tiene limite
-    var clampedY =
-        position.y.clamp(300 - size.y / 2, game.canvasSize.y - size.y / 2);
+    var clampedY = position.y.clamp(size.y / 2, game.canvasSize.y - size.y / 2);
     double clampedX =
         position.x.clamp(size.x / 2, game.canvasSize.x - size.x / 2);
     position = Vector2(clampedX, clampedY);
@@ -51,9 +55,13 @@ class Player extends SpriteAnimationComponent
     await super.onLoad();
 
     animation = await game.loadSpriteAnimation(
-        'player.png',
+        // _spaceShips.sprite,
+        _spaceShips.sprite,
         SpriteAnimationData.sequenced(
-            amount: 4, stepTime: 0.2, textureSize: Vector2(32, 48)));
+            // amount: 4, stepTime: 0.2, textureSize: Vector2(32, 48)));
+            amount: 5,
+            stepTime: 0.2,
+            textureSize: Vector2(192, 192)));
 
     position = gameRef.size / 2;
     add(RectangleHitbox());
@@ -65,11 +73,17 @@ class Player extends SpriteAnimationComponent
   // }
 
   void startShooting() {
-    Bullet bullet = Bullet(position: position + Vector2(0, -height / 2));
+    Bullet bullet = Bullet(position: position + Vector2(0, -height / 4));
 
     game.add(bullet);
 
     audioGame.onFire();
+  }
+
+  void reset() {
+    life = _spaceShips.life;
+    position = gameRef.size / 2;
+    resetScore();
   }
 
   // void stopShooting() {
@@ -104,5 +118,10 @@ class Player extends SpriteAnimationComponent
       game.add(Explosion(position: position));
       other.removeFromParent();
     }
+  }
+
+  void setPlayerShip(SpaceShipsTypes spaceShipType) {
+    spaceShipsType = spaceShipType;
+    _spaceShips = SpaceShips.getSpaceShipspByType(spaceShipType);
   }
 }

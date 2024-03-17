@@ -5,7 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nes_ui/nes_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:space_shutter/app_life_cicle/app_lifecycle.dart';
-import 'package:space_shutter/audio/audio_controller.dart';
+import 'package:space_shutter/player_progress/player_data.dart';
+
 import 'package:space_shutter/player_progress/player_progress.dart';
 import 'package:space_shutter/router.dart';
 import 'package:space_shutter/settings/settings.dart';
@@ -29,7 +30,8 @@ class MyGame extends StatelessWidget {
         child: MultiProvider(
             providers: [
           Provider(create: (context) => Palette()),
-          ChangeNotifierProvider(create: (context) => PlayerProgress()),
+          ChangeNotifierProvider(
+              create: (context) => PlayerData.fromMap(PlayerData.defaultData)),
           Provider(create: (context) => SettingsController()),
           // Audio
           // ProxyProvider2<SettingsController, AppLifecycleStateNotifier,
@@ -60,7 +62,6 @@ class MyGame extends StatelessWidget {
                   ),
                 ),
                 debugShowCheckedModeBanner: false,
-                // routerConfig: goRouter,
                 routeInformationProvider: goRouter.routeInformationProvider,
                 routeInformationParser: goRouter.routeInformationParser,
                 routerDelegate: goRouter.routerDelegate,

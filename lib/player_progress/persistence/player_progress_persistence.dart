@@ -1,13 +1,13 @@
-/// An interface of persistence stores for the player's progress.
-///
-/// Implementations can range from simple in-memory storage through
-/// local preferences to cloud saves.
-abstract class PlayerProgressPersistence {
-  Future<List<int>> getFinishedLevels();
-  Future<List<int>> getFinishedWorlds();
+// /// An interface of persistence stores for the player's progress.
+// ///
+// /// Implementations can range from simple in-memory storage through
+// /// local preferences to cloud saves.
+// abstract class PlayerProgressPersistence {
+//   Future<List<int>> getFinishedLevels();
+//   Future<List<int>> getFinishedWorlds();
 
-  Future<void> saveLevelFinished(int level, int time);
-  Future<void> saveWorldFinished(int world);
+//   Future<void> saveLevelFinished(int level, int time);
+//   Future<void> saveWorldFinished(int world);
 
-  Future<void> reset();
-}
+//   Future<void> reset();
+// }
