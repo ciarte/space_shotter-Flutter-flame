@@ -23,12 +23,13 @@ class SpaceShooterGame extends FlameGame
     with PanDetector, HasCollisionDetection, TapDetector {
   SpaceShooterGame({
     required this.level,
-    // required PlayerProgress playerProgress,
+    required this.playerProgress,
     required this.audioController,
     Random? random,
   }) : _random = random ?? Random();
 
   late Player player;
+  late PlayerData playerProgress;
   final Random _random;
 
   final GameLevels level;
@@ -79,14 +80,14 @@ class SpaceShooterGame extends FlameGame
 
     //player
 
-    const spaceShipType = SpaceShipsTypes.primary;
-    // final spaceShip = SpaceShips.getSpaceShipspByType(spaceShipType);
+    final spaceShipType = playerProgress.spaceShipType;
+    final spaceShip = SpaceShips.getSpaceShipspByType(spaceShipType);
 
     player = Player(
       joystick,
       addScore: addScore,
       resetScore: resetScore,
-      spaceShipsType: spaceShipType,
+      spaceShipsType: spaceShip,
     );
 
     add(player);
@@ -118,7 +119,7 @@ class SpaceShooterGame extends FlameGame
 
     playerLifeNotifier = ValueNotifier<int>(player.life);
     scoreNotifier = ValueNotifier(0);
-    final scoreText = 'Score: ${scoreNotifier.value}';
+    final scoreText = 'Score: ${scoreNotifier.value} / ${level.winScore}';
 
     final textRenderer = TextPaint(
       style: const TextStyle(
@@ -137,11 +138,11 @@ class SpaceShooterGame extends FlameGame
       scoreComponent.text =
           scoreText.replaceFirst('0', '${scoreNotifier.value} ');
 
-      // if (scoreNotifier.value >= level.winScore) {
-      //   pauseEngine();
+      if (scoreNotifier.value >= level.winScore) {
+        pauseEngine();
 
-      //   overlays.add(GameScreen.winDialogKey);
-      // }
+        overlays.add(GameScreen.winDialogKey);
+      }
     });
 
     overlays.addAll([GameScreen.backButtonKey]);
@@ -150,26 +151,13 @@ class SpaceShooterGame extends FlameGame
     //     position: Vector2(30, size.y - 30),
     //     textRenderer: textRenderer);
 
-    // playerLifeNotifier.addListener(() {
-    //   lifeComponent.text = 'Life: ${playerLifeNotifier.value}';
+    playerLifeNotifier.addListener(() {
+      if (playerLifeNotifier.value < 0) {
+        pauseEngine();
 
-    //   // if (playerLifeNotifier.value < 0) {
-    //   //   pauseEngine();
-
-    //   //   overlays.add(GameScreen.looseDialogKey);
-    //   // }
-    // });
-
-    // camera.viewport.add(lifeComponent);
-
-    // final sprite1 = await Sprite.load('heart.png');
-    // final lifeComponent1 = SpriteComponent(
-    //   sprite: sprite1,
-    //   size: Vector2.all(28),
-    //   position: Vector2(size.x - 34, size.y - 260),
-    // );
-
-    // camera.viewport.add(lifeComponent1);
+        overlays.add(GameScreen.looseDialogKey);
+      }
+    });
 
     camera.viewport.add(scoreComponent);
     final lifeBar = LifeBarComponent(player, size);

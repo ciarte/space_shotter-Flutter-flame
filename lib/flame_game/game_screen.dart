@@ -11,6 +11,7 @@ import 'package:space_shutter/level_selection/levels.dart';
 import 'package:space_shutter/flame_game/space_shooter_game.dart';
 
 import 'package:flame/game.dart';
+import 'package:space_shutter/player_progress/player_data.dart';
 import 'package:space_shutter/player_progress/player_progress.dart';
 
 class GameScreen extends StatelessWidget {
@@ -34,7 +35,7 @@ class GameScreen extends StatelessWidget {
     return GameWidget(
       game: SpaceShooterGame(
         level: level,
-        // playerProgress: context.read<PlayerProgress>(),
+        playerProgress: context.read<PlayerData>(),
         audioController: audioGame,
       ),
       overlayBuilderMap: {
@@ -52,9 +53,10 @@ class GameScreen extends StatelessWidget {
         winDialogKey: (context, SpaceShooterGame game) {
           return GameWinDialog(level: level, world: world);
         },
-        looseDialogKey: (context, game) {
+        looseDialogKey: (context, SpaceShooterGame game) {
           return GameLooseDialog(
             level: level,
+            game: game,
           );
         },
       },

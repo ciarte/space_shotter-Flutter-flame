@@ -7,8 +7,8 @@ import 'package:space_shutter/level_selection/levels.dart';
 import 'package:space_shutter/player_progress/player_progress.dart';
 import 'package:space_shutter/style/style.dart';
 
-class WorldSelectionScreen extends StatelessWidget {
-  const WorldSelectionScreen({
+class WorldSelection extends StatelessWidget {
+  const WorldSelection({
     super.key,
     required this.world,
   });

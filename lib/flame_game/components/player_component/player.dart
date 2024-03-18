@@ -15,7 +15,7 @@ import 'package:space_shutter/models/player_ships_model.dart';
 
 class Player extends SpriteAnimationComponent
     with HasGameRef<SpaceShooterGame>, CollisionCallbacks {
-  SpaceShipsTypes spaceShipsType;
+  SpaceShips spaceShipsType;
   SpaceShips _spaceShips;
   late int life;
 
@@ -28,7 +28,8 @@ class Player extends SpriteAnimationComponent
       {required this.spaceShipsType,
       required this.addScore,
       required this.resetScore})
-      : _spaceShips = SpaceShips.getSpaceShipspByType(spaceShipsType),
+      // : _spaceShips = SpaceShips.getSpaceShipspByType(spaceShipsType),
+      : _spaceShips = spaceShipsType,
         super(size: Vector2(80, 120), anchor: Anchor.center, angle: -pi / 2) {
     life = _spaceShips.life;
   }
@@ -121,7 +122,7 @@ class Player extends SpriteAnimationComponent
   }
 
   void setPlayerShip(SpaceShipsTypes spaceShipType) {
-    spaceShipsType = spaceShipType;
+    // spaceShipsType = spaceShipType;
     _spaceShips = SpaceShips.getSpaceShipspByType(spaceShipType);
   }
 }

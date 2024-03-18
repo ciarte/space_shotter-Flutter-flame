@@ -1,56 +1,126 @@
-import 'package:card_swiper/card_swiper.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 
-import 'package:space_shutter/level_selection/world_selection_screen.dart';
-import 'package:space_shutter/level_selection/levels.dart';
-
+import 'package:provider/provider.dart';
+// import 'package:space_shutter/level_selection/levels.dart';
+import 'package:space_shutter/models/player_ships_model.dart';
+import 'package:space_shutter/player_progress/player_data.dart';
+// import 'package:space_shutter/player_progress/player_progress.dart';
 import 'package:space_shutter/style/style.dart';
+import 'package:space_shutter/style/wobbly_button.dart';
 
-class ShipSelection extends StatelessWidget {
-  const ShipSelection({super.key});
-
+class ShhipSeceltion extends StatelessWidget {
+  const ShhipSeceltion({
+    super.key,
+    required this.ships,
+  });
+  final int ships;
+  // final SpaceShipsTypes spaceShip = spaceShip.s ;
+  static const _gap = SizedBox(height: 10);
   @override
   Widget build(BuildContext context) {
-    //size total de la pantalla
-    final size = MediaQuery.of(context).size;
-    // final palette = context.watch<Palette>();
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          Image.asset(
-            'assets/images/fondo5.jpg',
-            filterQuality: FilterQuality.low,
-            fit: BoxFit.fitHeight,
-            height: size.height,
+    final palette = context.watch<Palette>();
+    final spaceShip = SpaceShips.spaceShips.entries.elementAt(ships).value;
+    final playerProgress = context.watch<PlayerData>();
+    // final blocked = playerProgress.worlds.length >= world.number - 1;
+    // final blocked = ship.number > 1;
+    final type = SpaceShips.spaceShips.entries.elementAt(ships).key;
+    final isEquiped = playerProgress.isEquiped(type);
+    final isOwned = playerProgress.isOwned(type);
+    final canBuy = playerProgress.canBuy(type);
+    return Column(
+      children: [
+        Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationZ(-0.5 * pi), // Girar horizontalmente
+          child: Image.asset(
+            'assets/images/${spaceShip.name}_idle.png',
+            scale: 0.5,
           ),
-          Positioned(
-            right: 20,
-            top: 20,
-            child: WobblyButton(
-              onPressed: () {
-                GoRouter.of(context).go('/');
-              },
-              child: const Text('Back'),
-            ),
+        ),
+        WobblyButton(
+          onPressed: isEquiped
+              ? null
+              : () {
+                  if (isOwned) {
+                    playerProgress.equiped(type);
+                  } else {
+                    if (canBuy) {
+                      playerProgress.buy(type);
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (contex) {
+                            return AlertDialog(
+                              title: const Text('Insufficient funds'),
+                              content: Text(
+                                'Need ${spaceShip.cost - playerProgress.money} more coins',
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          });
+                    }
+                  }
+                },
+          child: Text(isEquiped
+              ? 'Equiped'
+              : isOwned
+                  ? 'Select'
+                  : 'Buy'),
+        ),
+        _gap,
+        Text(
+          spaceShip.name,
+          style: TextStyle(
+            fontSize: 20,
+            color: palette.text.color,
           ),
-          Padding(
-            padding: EdgeInsets.only(top: size.height / 3),
-            child: Swiper(
-              scale: 0.5,
-              viewportFraction: 0.65,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: gameLevels.length,
-              itemBuilder: (conext, index) {
-                return WorldSelectionScreen(world: gameLevels[index]);
-              },
-            ),
+        ),
+        _gap,
+        Text(
+          'Value: ${spaceShip.cost}',
+          style: TextStyle(
+            fontSize: 14,
+            color: palette.text.color,
           ),
-        ],
-      ),
+        ),
+        _gap,
+        Text(
+          'Speed: ${spaceShip.speed.toInt()} Km/h',
+          style: TextStyle(
+            fontSize: 14,
+            color: palette.text.color,
+          ),
+        ),
+        _gap,
+        Text(
+          'Level: ${spaceShip.level}',
+          style: TextStyle(
+            fontSize: 14,
+            color: palette.text.color,
+          ),
+        ),
+        // _gap,
+        // Text(
+        //   'naves: ${(playerProgress.ownSpaceShipsTypes).toList()}',
+        //   style: TextStyle(
+        //     fontSize: 14,
+        //     color: palette.text.color,
+        //   ),
+        // ),
+        // _gap,
+        // Text(
+        //   'selecionado: ${(playerProgress.spaceShipType)}',
+        //   style: TextStyle(
+        //     fontSize: 14,
+        //     color: palette.text.color,
+        //   ),
+        // ),
+      ],
     );
   }
 }

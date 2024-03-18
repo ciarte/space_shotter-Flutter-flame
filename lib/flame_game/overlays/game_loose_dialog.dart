@@ -5,6 +5,11 @@ import 'package:go_router/go_router.dart';
 
 import 'package:nes_ui/nes_ui.dart';
 import 'package:provider/provider.dart';
+import 'package:space_shutter/flame_game/components/bullets/bullet.dart';
+import 'package:space_shutter/flame_game/components/enemy/enemy.dart';
+import 'package:space_shutter/flame_game/components/explosion/explosion.dart';
+import 'package:space_shutter/flame_game/game_screen.dart';
+import 'package:space_shutter/flame_game/space_shooter_game.dart';
 import 'package:space_shutter/level_selection/levels.dart';
 import 'package:space_shutter/style/style.dart';
 
@@ -13,19 +18,23 @@ class GameLooseDialog extends StatelessWidget {
   const GameLooseDialog({
     super.key,
     required this.level,
+    required this.game,
   });
 
   /// The properties of the level
   final GameLevels level;
+  final SpaceShooterGame game;
+  static const _gap = SizedBox(height: 20);
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final palette = context.read<Palette>();
     return Center(
       child: NesContainer(
-        width: 420,
-        height: 400,
-        backgroundColor: palette.backgroundPlaySession.color,
+        width: size.width - 80,
+        height: size.height / 2.5,
+        backgroundColor: palette.backgroundDialog.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -34,21 +43,36 @@ class GameLooseDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            _gap,
             Text(
               'You did not completed level',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            _gap,
             NesButton(
               onPressed: () {
-                context.go('/level/2');
+                game.overlays.remove(GameScreen.pauseMenu);
+
+                game.player.reset();
+
+                // Elimina todos los enemigos del juego
+                game.children
+                    .whereType<Enemy>()
+                    .forEach((enemy) => enemy.removeFromParent());
+                game.children
+                    .whereType<Bullet>()
+                    .forEach((bullet) => bullet.removeFromParent());
+                game.children
+                    .whereType<Explosion>()
+                    .forEach((explosion) => explosion.removeFromParent());
+                //reanuda el juego
+                game.resumeEngine();
               },
               type: NesButtonType.primary,
               child: const Text('Retry'),
             ),
-            const SizedBox(height: 16),
+            _gap,
             NesButton(
               onPressed: () {
                 context.go('/play');

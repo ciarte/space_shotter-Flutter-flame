@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 
-import 'package:space_shutter/level_selection/world_selection_screen.dart';
+import 'package:space_shutter/level_selection/world_selection.dart';
 import 'package:space_shutter/level_selection/levels.dart';
 
 import 'package:space_shutter/style/style.dart';
@@ -45,7 +45,7 @@ class WorldScreen extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemCount: gameLevels.length,
               itemBuilder: (conext, index) {
-                return WorldSelectionScreen(world: gameLevels[index]);
+                return WorldSelection(world: gameLevels[index]);
               },
             ),
           ),

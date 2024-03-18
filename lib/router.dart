@@ -6,6 +6,7 @@ import 'package:space_shutter/level_selection/levels.dart';
 
 import 'package:space_shutter/level_selection/world_screen.dart';
 import 'package:space_shutter/main_menu/main_menu_screen.dart';
+import 'package:space_shutter/ship_selection/ship_selection_screen.dart';
 
 import 'level_selection/level_selection_screen.dart';
 
@@ -16,6 +17,10 @@ final goRouter = GoRouter(routes: [
           const MainMenuScreen(key: Key('main menu screen'))),
   GoRoute(
     path: '/play',
+    builder: (context, state) => const ShipSelectionScreen(),
+  ),
+  GoRoute(
+    path: '/world_screen',
     builder: (context, state) => const WorldScreen(),
   ),
   GoRoute(
