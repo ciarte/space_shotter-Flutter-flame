@@ -40,32 +40,39 @@ class LifeBarComponent extends PositionComponent {
     final double currentWidth =
         maxWidth * (player.life / 10); // Calcular el ancho actual
 
+//fondo de la barra
     const RRect rect = RRect.fromLTRBXY(0, 10, 28, maxWidth, 15, 15);
-    // final Rect life = Rect.fromLTWH(0, maxWidth - currentWidth, 28, 150);
 
-    final RRect life =
-        RRect.fromLTRBXY(0, maxWidth - currentWidth, 28, maxWidth, 10, 10);
+//barra de vida
+    final RRect life = RRect.fromLTRBXY(
+        0,
+        (player.life > 0) ? maxWidth - currentWidth : 200,
+        28,
+        maxWidth,
+        10,
+        10);
 
     canvas.drawRRect(
         rect,
         Paint()
           ..color = const Color.fromARGB(255, 224, 208, 26).withOpacity(0.3));
 
-    final Rect rect1 =
-        Rect.fromLTRB(sizes.x - 30, sizes.y - 80, sizes.x - 10, sizes.y - 250);
-    final Rect life1 = Rect.fromLTRB(
-        sizes.x - 30, sizes.y - 80, sizes.x - 10, sizes.y - 50 - currentWidth);
-    canvas.drawRect(
-        rect1,
-        Paint()
-          ..color = const Color.fromARGB(255, 224, 208, 26).withOpacity(0.3));
-
 // Seleccionar el color de la barra de vida
     final Color barColor = selectBarColor(currentWidth, maxWidth);
 
+    // final Rect rect1 =
+    //     Rect.fromLTRB(sizes.x - 30, sizes.y - 80, sizes.x - 10, sizes.y - 250);
+
+    // final Rect life1 = Rect.fromLTRB(
+    //     sizes.x - 30, sizes.y - 80, sizes.x - 10, sizes.y - 50 - currentWidth);
+    // canvas.drawRect(
+    // rect1,
+    // Paint()
+    //   ..color = const Color.fromARGB(255, 224, 208, 26).withOpacity(0.3));
+
     // Dibujar la barra de vida
     canvas.drawRRect(life, Paint()..color = barColor);
-    canvas.drawRect(life1, Paint()..color = barColor);
+    // canvas.drawRect(life1, Paint()..color = barColor);
     // lifeComponent1.position = Vector2(230, 100);
 
     lifeComponent1.render(canvas);
